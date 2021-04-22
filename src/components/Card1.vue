@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "Card1",
+  name: 'Card1',
   props: {
     message: {
       type: String,
@@ -44,13 +44,13 @@ export default {
     },
   },
   data: () => ({
-    localMessage: "",
-    localCaption: "",
+    localMessage: '',
+    localCaption: '',
   }),
   methods: {
     change() {
-      this.localMessage += "!";
-      this.$emit("change", this.localMessage);
+      this.localMessage += '!';
+      this.$emit('change', this.localMessage);
     },
   },
 };

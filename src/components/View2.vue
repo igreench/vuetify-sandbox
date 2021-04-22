@@ -1,9 +1,18 @@
 <template>
-  <v-col v-if="items" class="mx-auto" style="max-width: 600px">
+  <v-col v-if="items1 && items2" class="mx-auto" style="max-width: 600px">
     <Card2
       class="my-1"
-      v-for="(item, i) of items"
-      :key="i"
+      v-for="(item, i) of items1"
+      :key="`col1-${i}`"
+      :title="item.title"
+      :image="item.image"
+      :color="item.color"
+    />
+    <div class="ma-10"></div>
+    <Card2
+      class="my-1"
+      v-for="(item, i) of items2"
+      :key="`col2-${i}`"
       :title="item.title"
       :image="item.image"
       :color="item.color"
@@ -12,75 +21,22 @@
 </template>
 
 <script>
-import axios from "axios";
-import Card2 from "./Card2";
+import Card2 from './Card2';
+
 export default {
-  name: "View2",
+  name: 'View2',
   components: { Card2 },
-  data() {
-    return {
-      items: null,
-    };
+  computed: {
+    items1() {
+      return this.$apis.SampleApi1.getCardItems1();
+    },
+    items2() {
+      return this.$apis.SampleApi1.getCardItems2();
+    },
   },
   async mounted() {
-    this.items = [];
-    const usedUrls = {};
-    const colors = [
-      "red",
-      "pink",
-      "purple",
-      "deep-purple",
-      "indigo",
-      "blue",
-      "light-blue",
-      "cyan",
-      "teal",
-      "green",
-      "light-green",
-      "lime",
-      "yellow",
-      "amber",
-      "orange",
-      "deep-orange",
-      "brown",
-      "blue-grey",
-      "grey",
-    ];
-    const textDataResponse = await axios.get(
-      "https://jsonplaceholder.typicode.com/albums"
-    );
-    await Promise.all(
-      Array.from(Array(10).keys()).map(async (i) => {
-        let colorDataResponse = null;
-        while (true) {
-          colorDataResponse = await fetch(
-            "https://source.unsplash.com/random/200x200/?nature"
-          );
-          if (!usedUrls[colorDataResponse.url]) {
-            usedUrls[colorDataResponse.url] = true;
-            break;
-          }
-          await new Promise((r) => setTimeout(r, 100));
-        }
-
-        let color = null;
-        while (true) {
-          color =
-            colors[Math.floor(Math.random() * colors.length)] + " darken-4";
-          if (this.items.length <= 1) {
-            break;
-          }
-          if (this.items[this.items.length - 1].color !== color) {
-            break;
-          }
-        }
-        this.items.push({
-          title: textDataResponse.data[i].title,
-          image: colorDataResponse.url,
-          color,
-        });
-      })
-    );
+    this.$apis.SampleApi1.loadSampleCardItems1().then(() => {});
+    this.$apis.SampleApi1.loadSampleCardItems2().then(() => {});
   },
 };
 </script>

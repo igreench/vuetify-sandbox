@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "Layout1",
+  name: 'Layout1',
 };
 </script>
 

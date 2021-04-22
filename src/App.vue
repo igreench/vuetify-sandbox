@@ -20,14 +20,17 @@
 </template>
 
 <script>
-import util from "./util";
+
 export default {
   data: () => ({
     items: null,
   }),
   async mounted() {
-    this.items = (await util.getViewComponentsNames()).map((el) =>
-      el.toLowerCase().replace(".vue", "")
+    this.items = [
+      'View1',
+      'View2',
+    ].map(el =>
+      el.toLowerCase(),
     );
   },
 };

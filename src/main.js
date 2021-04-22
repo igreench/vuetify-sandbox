@@ -1,82 +1,87 @@
-import Vue from "vue";
+import Vue from 'vue';
 
-import App from "./App";
+import Vuetify from 'vuetify';
+import en from 'vuetify/es5/locale/en';
+import ru from 'vuetify/es5/locale/ru';
+import 'vuetify/dist/vuetify.min.css';
 
-import Vuetify from "vuetify";
-import en from "vuetify/es5/locale/en";
-import ru from "vuetify/es5/locale/ru";
-import "vuetify/dist/vuetify.min.css";
+import VueRouter from 'vue-router';
 
-import VueRouter from "vue-router";
+import App from './App';
 
-import util from "./util";
+import apis from './apis';
 
-(async function () {
+(async function init() {
   Vue.use(Vuetify);
 
   const vuetify = new Vuetify({
     theme: {
       options: {
-        customProperties: true
+        customProperties: true,
       },
       themes: {
         light: {
-          primary: "#4C76C7",
-          secondary: "#446585",
-          accent: "#4C76C7",
-          error: "#c74c4c",
-          info: "#446585",
-          success: "#4cc79a",
-          warning: "#c77f4c"
-        }
-      }
+          primary: '#4C76C7',
+          secondary: '#446585',
+          accent: '#4C76C7',
+          error: '#c74c4c',
+          info: '#446585',
+          success: '#4cc79a',
+          warning: '#c77f4c',
+        },
+      },
     },
     lang: {
       locales: { en, ru },
-      current: "en"
+      current: 'en',
     },
     icons: {
-      iconfont: "fa"
-    }
+      iconfont: 'fa',
+    },
   });
 
   Vue.use(VueRouter);
 
-  const viewComponentsNames = await util.getViewComponentsNames();
-  const viewRoutesNames = viewComponentsNames.map((el) =>
-    el.toLowerCase().replace(".vue", "")
+  const viewComponentsNames = [
+    'View1',
+    'View2',
+  ];
+  const viewRoutesNames = viewComponentsNames.map(el =>
+    el.toLowerCase(),
   );
   const routes = [
     ...viewComponentsNames.map((el, i) => ({
       path: `/${viewRoutesNames[i]}`,
       name: viewRoutesNames[i],
       components: {
-        default: () => import(`./components/${el}`)
-      }
+        default: () => import(`./components/${el}`),
+      },
     })),
     {
-      path: "/*",
-      redirect: `/${viewRoutesNames[0]}`
+      path: '/*',
+      redirect: `/${viewRoutesNames[0]}`,
     },
     {
-      path: "/",
-      redirect: `/${viewRoutesNames[0]}`
-    }
+      path: '/',
+      redirect: `/${viewRoutesNames[0]}`,
+    },
   ];
   const router = new VueRouter({
-    mode: "history",
-    base: "/",
-    routes
+    mode: 'history',
+    base: '/',
+    routes,
   });
+
+  Vue.prototype.$apis = apis;
 
   Vue.config.productionTip = false;
 
   /* eslint-disable no-new */
   new Vue({
-    el: "#app",
+    el: '#app',
     vuetify,
     router,
     components: { App },
-    template: "<App/>"
+    template: '<App/>',
   });
-})();
+}());

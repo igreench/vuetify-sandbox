@@ -7,19 +7,25 @@
 </template>
 
 <script>
-import Card1 from "./Card1";
-import Layout1 from "./Layout1";
+import Card1 from './Card1';
+import Layout1 from './Layout1';
+
 export default {
-  name: "View1",
+  name: 'View1',
   components: { Card1, Layout1 },
-  data() {
-    return {
-      message: "hello",
-    };
+  // data() {
+  //   return {
+  //     message: this.$apis.SampleApi1.getMessage(),
+  //   };
+  // },
+  computed: {
+    message() {
+      return this.$apis.SampleApi1.getMessage();
+    },
   },
   methods: {
     change(v) {
-      this.message = v;
+      this.$apis.SampleApi1.changeMessage(v);
     },
   },
 };
